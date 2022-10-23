@@ -1,0 +1,304 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "Bors stuff",
+        "description": "Bors stuff",
+        "version": "0.1.0"
+    },
+    "components": {
+        "schemas": {
+            "LibraryItemDto": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "type": {
+                        "anyOf": [
+                            {
+                                "type": "string",
+                                "enum": [
+                                    "folder"
+                                ]
+                            },
+                            {
+                                "type": "string",
+                                "enum": [
+                                    "file"
+                                ]
+                            }
+                        ]
+                    },
+                    "parentId": {
+                        "anyOf": [
+                            {
+                                "type": "null"
+                            },
+                            {
+                                "type": "object",
+                                "specialized": "Undefined"
+                            },
+                            {
+                                "type": "number"
+                            }
+                        ]
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "documentId": {
+                        "anyOf": [
+                            {
+                                "type": "null"
+                            },
+                            {
+                                "type": "object",
+                                "specialized": "Undefined"
+                            },
+                            {
+                                "type": "number"
+                            }
+                        ]
+                    },
+                    "documentUrl": {
+                        "anyOf": [
+                            {
+                                "type": "null"
+                            },
+                            {
+                                "type": "object",
+                                "specialized": "Undefined"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ]
+                    },
+                    "description": {
+                        "anyOf": [
+                            {
+                                "type": "null"
+                            },
+                            {
+                                "type": "object",
+                                "specialized": "Undefined"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ]
+                    },
+                    "creationTime": {
+                        "anyOf": [
+                            {
+                                "type": "null"
+                            },
+                            {
+                                "type": "object",
+                                "specialized": "Undefined"
+                            },
+                            {
+                                "description": "Date format is \"yyyy.MM.dd\"",
+                                "pattern": "^\\d{4}\\.\\d{2}\\.\\d{2}$",
+                                "type": "string"
+                            }
+                        ]
+                    },
+                    "linkUrl": {
+                        "anyOf": [
+                            {
+                                "type": "null"
+                            },
+                            {
+                                "type": "object",
+                                "specialized": "Undefined"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ]
+                    }
+                },
+                "required": [
+                    "id",
+                    "type",
+                    "name"
+                ]
+            },
+            "LibraryViewDto": {
+                "type": "object",
+                "properties": {
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/LibraryItemDto"
+                        }
+                    },
+                    "isUploadEnabled": {
+                        "anyOf": [
+                            {
+                                "type": "null"
+                            },
+                            {
+                                "type": "object",
+                                "specialized": "Undefined"
+                            },
+                            {
+                                "type": "boolean"
+                            }
+                        ]
+                    }
+                },
+                "required": [
+                    "items"
+                ]
+            },
+            "RemoveLibraryItemsDto": {
+                "type": "object",
+                "properties": {
+                    "removedItems": {
+                        "type": "array",
+                        "items": {
+                            "type": "number"
+                        }
+                    }
+                },
+                "required": [
+                    "removedItems"
+                ]
+            }
+        }
+    },
+    "paths": {
+        "/__restart": {
+            "get": {
+                "tags": [
+                    "_fastify-internal"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Default Response"
+                    }
+                }
+            }
+        },
+        "/library/": {
+            "get": {
+                "operationId": "getLibraryView",
+                "tags": [
+                    "library-controller"
+                ],
+                "parameters": [
+                    {
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string",
+                                    "enum": [
+                                        "tender"
+                                    ]
+                                },
+                                {
+                                    "type": "string",
+                                    "enum": [
+                                        "knowledgebase"
+                                    ]
+                                },
+                                {
+                                    "type": "string",
+                                    "enum": [
+                                        "documents"
+                                    ]
+                                }
+                            ]
+                        },
+                        "in": "query",
+                        "name": "location",
+                        "required": true
+                    },
+                    {
+                        "schema": {
+                            "type": "number"
+                        },
+                        "in": "query",
+                        "name": "orderId",
+                        "required": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Default Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "items": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/LibraryItemDto"
+                                            }
+                                        },
+                                        "isUploadEnabled": {
+                                            "anyOf": [
+                                                {
+                                                    "type": "null"
+                                                },
+                                                {
+                                                    "type": "object",
+                                                    "specialized": "Undefined"
+                                                },
+                                                {
+                                                    "type": "boolean"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "items"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "deleteLibraryItems",
+                "tags": [
+                    "library-controller"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "removedItems": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "number"
+                                        }
+                                    }
+                                },
+                                "required": [
+                                    "removedItems"
+                                ]
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Default Response"
+                    }
+                }
+            }
+        }
+    },
+    "externalDocs": {
+        "url": "https://swagger.io/specification/",
+        "description": "Find more info here"
+    }
+}

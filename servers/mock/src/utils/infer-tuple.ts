@@ -1,0 +1,1 @@
+export function inferTuple<T>() { return <U extends T[]>(...tuple: U) => tuple};

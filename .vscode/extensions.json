@@ -1,0 +1,18 @@
+{
+    "recommendations": [
+        "Vue.volar",
+        "Vue.vscode-typescript-vue-plugin",
+        "EditorConfig.EditorConfig",
+        "eamodio.gitlens",
+        "mrmlnc.vscode-scss",
+        "yzhang.markdown-all-in-one",
+        "jock.svg",
+        "emmanuelbeziat.vscode-great-icons",
+    ],
+    "unwantedRecommendations": [
+        "octref.vetur",
+        "hookyqr.beautify",
+        "dbaeumer.jshint",
+        "ms-vscode.vscode-typescript-tslint-plugin"
+    ]
+}

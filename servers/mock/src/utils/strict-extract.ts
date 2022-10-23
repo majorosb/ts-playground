@@ -1,0 +1,1 @@
+export type StrictExtract<T, K extends T> = Extract<T, K>;
